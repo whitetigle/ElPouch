@@ -1,8 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "test" : "fake run build.fsx",
-        "deploy" : "fake -v run build.fsx --target Publish"
+        "test": "fake run build.fsx --target MochaTest",
+        "deploy": "fake run build.fsx --target Publish"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
@@ -11,9 +11,8 @@
         "autoprefixer": "^9.1.5",
         "babel-loader": "^8.0.0",
         "bulma": "^0.7.1",
-        "fable-loader": "2.0.0",
-        "fable-splitter": "^0.1.21",
-        "fable-utils": "^1.2.0",
+        "fable-loader": "^2.0.0",
+        "fable-splitter": "^2.0.2",
         "font-awesome": "^4.7.0",
         "handlebars": "^4.0.12",
         "highlight.js": "^9.12.0",
@@ -34,6 +33,10 @@
         "last 2 version"
     ],
     "dependencies": {
-        "pouchdb": "^7.0.0"
+        "@babel/core": "^7.0.0",
+        "@babel/polyfill": "^7.0.0",
+        "pouchdb": "^7.0.0",
+        "rollup": "^0.67.0",
+        "rollup-plugin-fable": "^2.0.0"
     }
 }

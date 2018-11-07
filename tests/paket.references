@@ -1,3 +1,6 @@
 FSharp.Core
 Fable.Core
 Fable.Import.Browser
+Thoth.Json
+Fable.PowerPack
+dotnet-fable

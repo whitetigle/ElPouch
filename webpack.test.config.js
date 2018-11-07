@@ -4,7 +4,6 @@ function resolve(filePath) {
     return path.join(__dirname, filePath)
 }
 
-
 module.exports = {
     entry: [
         "isomorphic-fetch",

@@ -17,5 +17,5 @@ paket add ElPouch --project /path/to/Project.fsproj
 
 ## Build
 
-Type `yarn test` to prepare and run tests locally.
+Type `yarn test` to prepareproject and run tests locally.
 

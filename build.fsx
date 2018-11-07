@@ -94,13 +94,30 @@ let dotnet workingDir command args =
 
     if not result.OK then failwithf "dotnet failed with code %i" result.ExitCode
 
+let testsGlob = "tests/**/*.fsproj"
+
+Target.create "MochaTest" (fun _ ->
+    !! testsGlob
+    |> Seq.iter(fun proj ->
+        let projDir = proj |> Path.getDirectory
+        //Compile to JS
+        dotnet projDir "fable" "yarn-run rollup --port free -- -c tests/rollup.config.js"
+
+        //Run mocha tests
+        let projDirOutput = projDir </> "bin"
+        Yarn.exec ("run mocha " + projDirOutput) id
+    )
+)
+
 Target.create "Test" (fun _ ->
     let result = DotNet.exec (dtntWorkDir CWD) "fable" "webpack-cli -- --config webpack.test.config.js"
 
     if not result.OK then failwithf "Build of tests project failed."
 
-    Yarn.exec "mocha build" (fun o -> { o with WorkingDirectory = CWD })
+    Yarn.exec "run mocha build" (fun o -> { o with WorkingDirectory = CWD })
 )
+
+
 
 let docFsproj = "./docs/Docs.fsproj"
 let docs = CWD </> "docs"
@@ -272,7 +289,7 @@ Target.create "Docs.Publish" (fun _ ->
 
 "Bootstrap"
     ==> "Restore"
-    ==> "Test"
+    ==> "MochaTest"
     ==> "PublishPackages"
     ==> "GitHubRelease"
 
@@ -288,4 +305,4 @@ Target.create "Docs.Publish" (fun _ ->
 "Docs.Build"
     ==> "Docs.Publish"
 
-Target.runOrDefault "Test"
+Target.runOrDefault "MochaTest"
