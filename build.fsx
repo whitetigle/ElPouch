@@ -234,21 +234,13 @@ let pushNuget (releaseNotes: ReleaseNotes.ReleaseNotes) (projFile: string) =
                                          DotNetCliPath = "dotnet" } } )
             projFile
 
-        (*    
-        let files = Directory.GetFiles("src" </> "bin" </> "Release", "*.nupkg")
-
-        let found =         
-            files 
-            |> Array.find (fun nupkg -> nupkg.Contains(releaseNotes.NugetVersion))
-        
-        failwith (sprintf "%A" (found))
-
-        found
+        Directory.GetFiles("src" </> "bin" </> "Release", "*.nupkg")
+        |> Array.find (fun nupkg -> nupkg.Contains(releaseNotes.NugetVersion))
         |> (fun nupkg ->
             (Path.GetFullPath nupkg, nugetKey)
             ||> sprintf "push %s -s nuget.org -k %s")
         |> dotnet "" "nuget"
-        *)
+
 
 Target.create "Publish" (fun _ ->
     let projDir = IO.Path.GetDirectoryName(projFile)
