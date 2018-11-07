@@ -3,6 +3,19 @@
 
 # ElPouch
 
-Wrappers and Helpers for PouchDB for browsers and nodejs
+Fable wrappers and helpers for [PouchDB](http://www.pouchdb.com)
 
-Type `./fake.sh` to run tests locally.
+Package | Stable | Prerelease
+--- | --- | ---
+ElPouch | [![NuGet Badge](https://buildstats.info/nuget/ElPouch)](https://www.nuget.org/packages/ElPouch/) | [![NuGet Badge](https://buildstats.info/nuget/ElPouch?includePreReleases=true)](https://www.nuget.org/packages/ElPouch/)
+
+## Installation
+- Install this library from nuget
+```
+paket add ElPouch --project /path/to/Project.fsproj
+```
+
+## Build
+
+Type `yarn test` to prepare and run tests locally.
+

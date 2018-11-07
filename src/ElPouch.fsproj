@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>0.0.1</Version>
-    <PackageVersion>0.0.1</PackageVersion>
+    <Version>0.0.2</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>PouchDB wrappers and helpers for Fable</Description>
+    <PackageProjectUrl>https://github.com/whitetigle/ElPouch</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/whitetigle/ElPouch/blob/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/whitetigle/ElPouch</RepositoryUrl>
+    <PackageTags>fable;fsharp;pouchdb</PackageTags>
+    <Authors>François Nicaise</Authors>    
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Core.fs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="*.fsproj; *.fs" PackagePath="fable\" />
-    <!-- If we don't do it like this NuGet won't respect the folder structure -->
-    <Content Include="extra\" PackagePath="fable\extra" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
