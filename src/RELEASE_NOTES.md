@@ -1,3 +1,7 @@
+### 0.0.6
+
+* Nuget deploy tests
+
 ### 0.0.5
 
 * Nuget deploy tests
