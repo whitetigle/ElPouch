@@ -1,5 +1,5 @@
-2018/11/07-22:38:27.197 6c94 Recovering log #3
-2018/11/07-22:38:27.197 6c94 Level-0 table #5: started
-2018/11/07-22:38:27.279 6c94 Level-0 table #5: 520 bytes OK
-2018/11/07-22:38:27.363 6c94 Delete type=0 #3
-2018/11/07-22:38:27.363 6c94 Delete type=3 #2
+2018/11/08-10:39:08.091 45ac Recovering log #54
+2018/11/08-10:39:08.091 45ac Level-0 table #56: started
+2018/11/08-10:39:08.414 45ac Level-0 table #56: 1391 bytes OK
+2018/11/08-10:39:08.499 45ac Delete type=0 #54
+2018/11/08-10:39:08.499 45ac Delete type=3 #52

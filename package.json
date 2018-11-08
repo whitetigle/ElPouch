@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "test": "fake run build.fsx --target MochaTest",
-        "deploy": "fake run build.fsx --target Publish"
+        "nuget": "fake run build.fsx --target Publish"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",

@@ -249,35 +249,13 @@ let pushNuget (releaseNotes: ReleaseNotes.ReleaseNotes) (projFile: string) =
             ||> sprintf "push %s -s nuget.org -k %s")
         |> dotnet "" "nuget"
         *)
-(*
+
 Target.create "Publish" (fun _ ->
     let projDir = IO.Path.GetDirectoryName(projFile)
     let release = projDir </> "RELEASE_NOTES.md" |> ReleaseNotes.load
     pushNuget release projFile
 )
-*)
 
-let publish projectPath = 
-    let dotnetCli = "dotnet"
-    [ projectPath </> "bin"
-      projectPath </> "obj" ] |> Shell.cleanDirs
-
-    run dotnetCli "pack -c Release" projectPath
-    let nugetKey =
-        match Environment.environVarOrNone "NUGET_KEY" with
-        | Some nugetKey -> nugetKey
-        | None -> failwith "The Nuget API key must be set in a NUGET_KEY environmental variable"
-    let nupkg = 
-        Directory.GetFiles(projectPath </> "bin" </> "Release") 
-        |> Seq.head 
-        |> Path.GetFullPath
-
-    let pushCmd = sprintf "nuget push %s -s nuget.org -k %s" nupkg nugetKey
-    run dotnetCli pushCmd projectPath
-
-Target.create "Publish" ( fun _ -> 
-    publish "src" 
-)
 
 Target.create "GitHubRelease" (fun _ ->
     let releasePath = CWD </> "src/RELEASE_NOTES.md"
