@@ -1,3 +1,7 @@
+### 0.0.7
+
+* fix: https://github.com/whitetigle/ElPouch/issues/2
+
 ### 0.0.6
 
 * Nuget deploy tests
