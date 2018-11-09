@@ -25,7 +25,8 @@ group netcorebuild
     nuget Fake.Tools.Git
     nuget Fake.JavaScript.Yarn
     nuget Fake.Core.UserInput
-    github fable-compiler/fake-helpers Fable.FakeHelpers.fs
+    //github fable-compiler/fake-helpers Fable.FakeHelpers.fs
+    github fable-compiler/fake-helpers:fake_legacy Fable.FakeHelpers.fs
     github fsharp/FAKE modules/Octokit/Octokit.fsx
 
 group Docs

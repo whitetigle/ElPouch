@@ -59,6 +59,22 @@ describe "Core tests" <| fun _ ->
       }
         |> Promise.map(fun actual -> equal expected actual )
 
+    it "Put, check output" <| fun () ->
+      promise {
+        
+        // insert
+        let id = System.Guid.NewGuid().ToString()
+        let myObject =  { Id = id; Rev = None; Deleted = None; SomeInformation=None}
+        let! inserted = 
+          myObject
+            |> Test.Encode
+            |> db.put
+
+        // the put method returns an updated _rev field
+        return inserted.id = myObject.Id && inserted.rev.Length > 0
+      }
+        |> Promise.map(fun actual -> equal true actual )
+
     it "Get" <| fun () ->
       let expected = System.Guid.NewGuid().ToString()
       promise {
