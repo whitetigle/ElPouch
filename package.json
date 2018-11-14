@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "test": "fake run build.fsx --target MochaTest",
+        "test": "fake run build.fsx --target Test",
         "nuget": "fake run build.fsx --target Publish"
     },
     "devDependencies": {

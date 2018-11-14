@@ -23,7 +23,7 @@ open Fake.Tools.Git
 open Fake.JavaScript
 
 open Fable.FakeHelpers
-open Octokit
+//open Octokit
 
 let project = "ElPouch"
 let gitOwner = "whitetigle"
@@ -96,7 +96,7 @@ let dotnet workingDir command args =
 
 let testsGlob = "tests/**/*.fsproj"
 
-Target.create "MochaTest" (fun _ ->
+Target.create "Test" (fun _ ->
     !! testsGlob
     |> Seq.iter(fun proj ->
         let projDir = proj |> Path.getDirectory
@@ -109,6 +109,7 @@ Target.create "MochaTest" (fun _ ->
     )
 )
 
+(*
 Target.create "Test" (fun _ ->
     let result = DotNet.exec (dtntWorkDir CWD) "fable" "webpack-cli -- --config webpack.test.config.js"
 
@@ -116,6 +117,7 @@ Target.create "Test" (fun _ ->
 
     Yarn.exec "run mocha build" (fun o -> { o with WorkingDirectory = CWD })
 )
+*)
 
 
 
@@ -256,7 +258,7 @@ Target.create "Publish" (fun _ ->
     pushNuget release projFile
 )
 
-
+(*
 Target.create "GitHubRelease" (fun _ ->
     let releasePath = CWD </> "src/RELEASE_NOTES.md"
     githubRelease releasePath gitOwner project (fun user pw release ->
@@ -267,6 +269,7 @@ Target.create "GitHubRelease" (fun _ ->
         |> Async.RunSynchronously
     )
 )
+*)
 
 // Where to push generated documentation
 let githubLink = "https://github.com/whitetigle/ElPouch.git"
@@ -289,9 +292,9 @@ Target.create "Docs.Publish" (fun _ ->
 
 "Bootstrap"
     ==> "Restore"
-    ==> "MochaTest"
-    ==> "PublishPackages"
-    ==> "GitHubRelease"
+    ==> "Test"
+//    ==> "PublishPackages"
+//    ==> "GitHubRelease"
 
 "Docs.Setup"
     <== [ "Restore" ]

@@ -13,6 +13,7 @@
   <ItemGroup>
     <Compile Include="Core.fs" />
     <Compile Include="ElPouch/Encoder.fs" />
+    <Compile Include="ElPouch/Elmish.fs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="*.fsproj; **\*.fs" PackagePath="fable\" />
