@@ -44,6 +44,7 @@ The order is random:
 - allDocs + pagination
 - replication
 - bulk get and more bulk operations
+- map/reduce queries
 - proper test suites: mimic and comply with pouchdb offical test suites.
 - db management (compaction, pouchdb adapters)
 - Relax: easy to use helpers for everything with concrete cases (manage conflicts, auto-setup adapters, etc...)
