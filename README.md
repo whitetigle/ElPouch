@@ -37,3 +37,13 @@ But we do have easy to follow tests in the [`tests`](https://github.com/whitetig
 
 Type `yarn test` to prepare project and run tests locally.
 
+# Next 
+The order is random:
+
+- Put vs post: managing optional ids and removing the need for System.Guid
+- allDocs + pagination
+- replication
+- bulk get and more bulk operations
+- proper test suites: mimic and comply with pouchdb offical test suites.
+- db management (compaction, pouchdb adapters)
+- Relax: easy to use helpers for everything with concrete cases (manage conflicts, auto-setup adapters, etc...)
