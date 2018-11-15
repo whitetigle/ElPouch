@@ -1,3 +1,12 @@
+### 0.0.9
+
+* added bulkDocs support 
+* WIP ElPouch.Relax
+
+### 0.0.8
+
+* First Elmish helpers: ElPouch.Standard.allDocs and ElPouch.Relax.allDocs
+
 ### 0.0.7
 
 * fix: https://github.com/whitetigle/ElPouch/issues/2

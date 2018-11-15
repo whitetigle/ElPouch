@@ -254,6 +254,7 @@ module rec Core =
 
           and BulkDocsOptions =
               inherit Options
+              abstract docs: ResizeArray<Core.PutDocument> with get, set
               abstract new_edits: bool option with get, set
 
           and BulkGetOptions =
@@ -477,12 +478,6 @@ module rec Core =
                 [<Emit "$0.on('complete',$1)">] abstract on_complete: listener: ('F -> obj option) -> ReplicationEventEmitter<'Content, 'C, 'F>
                 abstract cancel: unit -> unit
 
-          (*
-            type [<AllowNullLiteral>] Replication<'Content> =
-                inherit ReplicationEventEmitter<'Content, ReplicationResult<'Content>, ReplicationResultComplete<'Content>>
-                inherit Promise<ReplicationResultComplete<'Content>>
-          *)
-
             type [<AllowNullLiteral>] ReplicationResult<'Content> =
                 abstract doc_write_failures: float with get, set
                 abstract docs_read: float with get, set
@@ -504,20 +499,12 @@ module rec Core =
           abstract put: doc:Core.PutDocument * ?options:Core.Options-> Promise<Core.Response>
           abstract get: docId:Core.DocumentId * ?options:Core.Options-> Promise<Core.Document>
           abstract find: request:Find.FindRequest -> Promise<Find.FindResponse>
+          abstract bulkDocs: options:Core.BulkDocsOptions-> Promise<ResizeArray<U2<Core.Response,Core.Error>>>
+          abstract bulkDocs: docs:ResizeArray<Core.PutDocument> * options:Core.BulkDocsOptions-> Promise<ResizeArray<U2<Core.Response,Core.Error>>>
           abstract allDocs: options:Core.AllDocsOptions -> Promise<Core.AllDocsResponse<'Content>>
           abstract query: view:string * options:(Query.Options option) -> Promise<Core.AllDocsResponse<'Content>>
-  //        abstract sync: local:string * remote:string * options:SyncOptions option-> Promise<Core.Response>
-          //abstract sync: remote:Database * options:SyncOptions option-> Promise<Core.BasicResponse>
-  //        abstract sync: remote:Database * options:SyncOptions option-> Promise<Core.BasicResponse>
           abstract sync: remote:string * options:SyncOptions option-> SyncChanges
           abstract createIndex: index:Find.CreateIndexOptions -> Promise<Find.CreateIndexResponse>
-
-          (*
-          [<Emit("$0.replicate.to($1)")>]
-          abstract ReplicateTo: remote:string -> Promise<Replication.ReplicationResultComplete<'Content>>
-          [<Emit("$0.replicate.from($1)")>]
-          abstract ReplicateFrom: remote:string -> Promise<Core.Document>
-          *)
 
           [<Emit("$0.replicate.to($1)")>]
           abstract ReplicateTo: remote:string -> Promise<Replication.ReplicationResultComplete<'Content>>

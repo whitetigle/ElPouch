@@ -6,33 +6,7 @@ open Fable.Core.JsInterop
 open Fable.Import
 open Thoth.Json
 open Fable.PowerPack
-module Encode = ElPouch.Encoder
-
-type Test = 
-  {
-    Id:string
-    Rev:string option
-    Deleted:bool option
-    SomeInformation: string option
-  }    
-  static member Encode ( o:Test) = 
-    Encode.empty
-      |> Encode.string Encode.Required "_id" (Some o.Id)
-      |> Encode.string Encode.Optional "_rev" o.Rev
-      |> Encode.bool Encode.Optional "_deleted" o.Deleted
-      |> Encode.string Encode.Optional "someInformation" o.SomeInformation
-      |> Encode.toPlainJsObj
-
-  static member Decoder : Decode.Decoder<Test> = 
-    Decode.object
-      (fun get -> 
-        {
-          Id = get.Required.Field "_id" Decode.string
-          Rev = get.Optional.Field "_rev" (Decode.option Decode.string) |> Option.defaultValue None
-          Deleted = get.Optional.Field "_deleted" (Decode.option Decode.bool) |> Option.defaultValue None
-          SomeInformation = get.Optional.Field "someInformation" (Decode.option Decode.string) |> Option.defaultValue None
-        } 
-    )
+open Types
 
 [<Global>]
 let it (msg: string) (f: unit->JS.Promise<'T>): unit = jsNative
@@ -42,7 +16,12 @@ let inline equal (expected: 'T) (actual: 'T): unit = Testing.Assert.AreEqual(exp
 [<Global>]
 let describe (_msg: string) (f: unit->unit): unit = jsNative
 
+// cleanup
+//PouchDB.Core.instance.Create(!^"test",None).destroy() |> ignore
+
+// our test db
 let db = PouchDB.Core.instance.Create(!^"test",None)
+
 describe "Core tests" <| fun _ ->
 
     it "Put" <| fun () ->
@@ -173,6 +152,23 @@ describe "Core tests" <| fun _ ->
       }
         |> Promise.map(fun actual -> equal "nogood" actual )
         |> Promise.catch(fun e-> equal "isMissing" "isMissing" )
+
+    it "Bulk" <| fun () ->
+      promise {
+
+        let data = 
+          [0..100] 
+            |> List.map (Test.Dummy >> Test.Encode)
+            |> List.toArray
+        
+        let options : PouchDB.Core.BulkDocsOptions = jsOptions( fun opt -> 
+          opt.docs <- !!data
+        )
+        let! results = db.bulkDocs options
+        return results.Count = data.Length
+      }
+        |> Promise.map(fun actual -> equal true actual )
+        |> Promise.catch(fun e-> printfn "%s" e.Message; equal "expected" "wrong" )
 
 describe "Conflict resolution" <| fun _ ->
     it "Update conflict" <| fun () ->
