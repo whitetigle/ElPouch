@@ -115,7 +115,7 @@ module rec Core =
 
       module Core =
           type [<AllowNullLiteral>] Error =
-              abstract status: float option with get, set
+              abstract status: int option with get, set
               abstract name: string option with get, set
               abstract message: string option with get, set
               abstract reason: string option with get, set
@@ -156,8 +156,8 @@ module rec Core =
 
           and [<AllowNullLiteral>] DatabaseInfo =
               abstract db_name: string with get, set
-              abstract doc_count: float with get, set
-              abstract update_seq: U2<float, string> with get, set
+              abstract doc_count: int with get, set
+              abstract update_seq: U2<int, string> with get, set
 
           and [<AllowNullLiteral>] Revision<'Content> =
               abstract ok: obj with get, set
@@ -194,7 +194,7 @@ module rec Core =
               abstract digest: string with get, set
               abstract stub: obj with get, set
               abstract ``true``: obj with get, set
-              abstract length: float with get, set
+              abstract length: int with get, set
 
           and [<AllowNullLiteral>] FullAttachment =
               abstract content_type: string with get, set
@@ -226,8 +226,8 @@ module rec Core =
               abstract conflicts: bool option with get, set
               abstract descending: bool option with get, set
               abstract include_docs: bool option with get, set
-              abstract limit: float option with get, set
-              abstract skip: float option with get, set
+              abstract limit: int option with get, set
+              abstract skip: int option with get, set
 
           and AllDocsWithKeyOptions =
               inherit AllDocsOptions
@@ -248,8 +248,8 @@ module rec Core =
               abstract _attachments: Attachments option with get, set
 
           and [<AllowNullLiteral>] AllDocsResponse<'Content> =
-              abstract offset: float with get, set
-              abstract total_rows: float with get, set
+              abstract offset: int with get, set
+              abstract total_rows: int with get, set
               abstract rows: ResizeArray<obj> with get, set
 
           and BulkDocsOptions =
@@ -275,14 +275,14 @@ module rec Core =
           and [<AllowNullLiteral>] ChangesOptions =
               abstract live: bool option with get, set
               abstract since: (* TODO StringEnum now |  |  *) string option with get, set
-              abstract timeout: U2<float, obj> option with get, set
+              abstract timeout: U2<int, obj> option with get, set
               abstract include_docs: bool option with get, set
-              abstract limit: U2<float, obj> option with get, set
+              abstract limit: U2<int, obj> option with get, set
               abstract conflicts: bool option with get, set
               abstract attachments: bool option with get, set
               abstract binary: bool option with get, set
               abstract descending: bool option with get, set
-              abstract heartbeat: U2<float, obj> option with get, set
+              abstract heartbeat: U2<int, obj> option with get, set
               abstract filter: U2<string, Func<obj, obj, obj>> option with get, set
               abstract doc_ids: ResizeArray<string> option with get, set
               abstract query_params: obj option with get, set
@@ -290,14 +290,14 @@ module rec Core =
 
           and [<AllowNullLiteral>] ChangesResponseChange<'Content> =
               abstract id: string with get, set
-              abstract seq: U2<float, string> with get, set
+              abstract seq: U2<int, string> with get, set
               abstract changes: ResizeArray<obj> with get, set
               abstract deleted: bool option with get, set
               abstract doc: ExistingDocument option with get, set
 
           and [<AllowNullLiteral>] ChangesResponse =
               abstract status: string with get, set
-              abstract last_seq: U2<float, string> with get, set
+              abstract last_seq: U2<int, string> with get, set
               abstract results: ResizeArray<ChangesResponseChange<'Content>> with get, set
 
           and [<AllowNullLiteral>] Changes =
@@ -366,8 +366,8 @@ module rec Core =
               abstract fields: ResizeArray<string> option with get, set
               abstract sort: ResizeArray<string> option with get, set
   //            abstract sort: ResizeArray<U2<string, obj>> option with get, set
-              abstract limit: float option with get, set
-              abstract skip: float option with get, set
+              abstract limit: int option with get, set
+              abstract skip: int option with get, set
               abstract use_index: U2<string, string * string> option with get, set
 
           and [<AllowNullLiteral>] FindResponse =
@@ -458,11 +458,11 @@ module rec Core =
                 /// You may need to adjust downward if targeting devices with low amounts of memory
                 /// e.g. or if the documents and/or attachments are large in size or if there are many conflicted revisions.
                 /// If your documents are small in size, then increasing this number will probably speed replication up.
-                abstract batch_size: float option with get, set
+                abstract batch_size: int option with get, set
                 /// Number of batches to process at a time. Defaults to 10.
                 /// This (along wtih batch_size) controls how many docs are kept in memory at a time,
                 /// so the maximum docs in memory at once would equal batch_size × batches_limit.
-                abstract batches_limit: float option with get, set
+                abstract batches_limit: int option with get, set
                 /// Backoff function to be used in retry replication. This is a function that takes the current
                 /// backoff as input (or 0 the first time) and returns a new backoff in milliseconds.
                 /// You can use this to tweak when and how replication will try to reconnect to a remote database when the user goes offline.
@@ -479,10 +479,10 @@ module rec Core =
                 abstract cancel: unit -> unit
 
             type [<AllowNullLiteral>] ReplicationResult<'Content> =
-                abstract doc_write_failures: float with get, set
-                abstract docs_read: float with get, set
-                abstract docs_written: float with get, set
-                abstract last_seq: float with get, set
+                abstract doc_write_failures: int with get, set
+                abstract docs_read: int with get, set
+                abstract docs_written: int with get, set
+                abstract last_seq: int with get, set
                 abstract start_time: DateTime with get, set
                 abstract ok: bool with get, set
                 abstract errors: ResizeArray<obj option> with get, set

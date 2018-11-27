@@ -1,3 +1,7 @@
+### 0.1.1
+
+* get: proper error handling with PouchDB.Core.Error
+
 ### 0.1.0
 
 * added allDocs support 

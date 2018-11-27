@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>PouchDB wrappers and helpers for Fable</Description>
     <PackageProjectUrl>https://github.com/whitetigle/ElPouch</PackageProjectUrl>

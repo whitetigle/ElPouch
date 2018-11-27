@@ -2,11 +2,17 @@ namespace ElPouch
 
   open Thoth.Json
   open Fable.Core.JsInterop
+  open PouchDB.Core
 
   module Types =
     type Code = int
     type Message = string
     type RequestError = Code * Message
+
+    type GetResult<'T> =
+      | Found of Result<'T, string>
+      | NotFound of PouchDB.Core.Error
+
     type HelperError =
       | JsonError of string
       | ServerError of ErrorDocument

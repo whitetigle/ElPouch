@@ -7,6 +7,7 @@ open Fable.Import
 open Thoth.Json
 open Fable.PowerPack
 open Types
+open ElPouch.Types
 
 [<Global>]
 let it (msg: string) (f: unit->JS.Promise<'T>): unit = jsNative
@@ -50,6 +51,42 @@ describe "Relax" <| fun _ ->
         |> ElPouch.Relax.get Test.Decoder db        
         |> Promise.map(fun result -> 
           match result with 
-          | Ok actual -> equal expected actual.Id
-          | Error _ -> equal expected "wrong one" 
+          | Found result -> 
+            match result with 
+            | Ok actual -> equal expected actual.Id
+            | Error _ -> equal expected "wrong one" 
+          | NotFound _ -> equal "expected" "wrong one" 
           )
+
+    it "Get should fail" <| fun () ->
+      let db = ElPouch.Relax.Database.create "relax"
+      let expected = System.Guid.NewGuid().ToString()
+
+      expected
+        |> ElPouch.Relax.get Test.Decoder db        
+        |> Promise.map(fun result -> 
+          match result with 
+          | Found result -> 
+            match result with 
+            | Ok actual -> equal expected actual.Id
+            | Error _ -> equal expected "wrong one" 
+          | NotFound _ -> equal "wrong" "wrong" 
+        )
+
+    it "Get should fail with status code 404" <| fun () ->
+      let db = ElPouch.Relax.Database.create "relax"
+      let expected = 404
+
+      "unknown id"
+        |> ElPouch.Relax.get Test.Decoder db        
+        |> Promise.map(fun result -> 
+          match result with 
+          | Found result -> 
+            match result with 
+            | Ok actual -> equal expected -1
+            | Error _ -> equal expected -1 
+          | NotFound error -> 
+            match error.status with 
+            | Some s -> equal expected s
+            | _ -> equal expected -1
+        )

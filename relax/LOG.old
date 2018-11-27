@@ -1,7 +1,0 @@
-2018/11/27-13:09:21.383 4da8 Recovering log #18
-2018/11/27-13:09:21.383 4da8 Level-0 table #20: started
-2018/11/27-13:09:21.415 4da8 Level-0 table #20: 743 bytes OK
-2018/11/27-13:09:21.506 4da8 Delete type=0 #18
-2018/11/27-13:09:21.506 4da8 Delete type=2 #19
-2018/11/27-13:09:21.506 4da8 Delete type=3 #16
-2018/11/27-13:09:21.506 1628 Compacting 6@0 + 0@1 files
