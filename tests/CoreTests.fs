@@ -16,9 +16,6 @@ let inline equal (expected: 'T) (actual: 'T): unit = Testing.Assert.AreEqual(exp
 [<Global>]
 let describe (_msg: string) (f: unit->unit): unit = jsNative
 
-// cleanup
-//PouchDB.Core.instance.Create(!^"test",None).destroy() |> ignore
-
 // our test db
 let db = PouchDB.Core.instance.Create(!^"test",None)
 
@@ -168,6 +165,40 @@ describe "Core tests" <| fun _ ->
         return results.Count = data.Length
       }
         |> Promise.map(fun actual -> equal true actual )
+        |> Promise.catch(fun e-> printfn "%s" e.Message; equal "expected" "wrong" )
+
+    it "AllDocs" <| fun () ->
+        let fakeDBName = System.Guid.NewGuid().ToString()
+        let dbf = PouchDB.Core.instance.Create(!^fakeDBName,None)
+        let count = ref 0 
+        promise {
+
+          let data = 
+            [0..10] 
+              |> List.map (Test.Dummy >> Test.Encode)
+              |> List.toArray
+          
+          let options : PouchDB.Core.BulkDocsOptions = jsOptions( fun opt -> 
+            opt.docs <- !!data
+          )
+          let! results = dbf.bulkDocs options
+          count := results.Count
+                    
+          let options : PouchDB.Core.AllDocsOptions = jsOptions( fun opt ->
+            opt.include_docs <- Some true
+          )
+          let! response = dbf.allDocs options
+          let strDoc = Fable.Import.JS.JSON.stringify(response)
+          return 
+            ElPouch.Helpers.decodeAllDocs Test.Decoder strDoc
+              |> function
+              | Ok innerDocuments -> innerDocuments |> List.length
+              | Error s -> 
+                match s with 
+                | ElPouch.Types.HelperError.JsonError message -> printfn "%s" message; -1
+                | ElPouch.Types.HelperError.ServerError doc -> printfn "%i" doc.Status; -1
+        }
+        |> Promise.map(fun actual -> equal actual !count )
         |> Promise.catch(fun e-> printfn "%s" e.Message; equal "expected" "wrong" )
 
 describe "Conflict resolution" <| fun _ ->

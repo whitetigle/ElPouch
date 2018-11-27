@@ -1,3 +1,11 @@
+### 0.1.0
+
+* added allDocs support 
+* ElPouch.Relax.get
+* ElPouch.Relax.allDocs
+* WIP ElPouch.Relax.Database
+* updated tests
+
 ### 0.0.9
 
 * added bulkDocs support 
