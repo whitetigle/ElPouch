@@ -9,13 +9,14 @@ namespace ElPouch
     type Message = string
     type RequestError = Code * Message
 
+    [<RequireQualifiedAccess>]
     type GetResult<'T> =
-      | Found of Result<'T, string>
-      | NotFound of PouchDB.Core.Error
+      | Found of 'T
+      | NotFound of HelperError 
 
-    type HelperError =
+    and HelperError =
       | JsonError of string
-      | ServerError of ErrorDocument
+      | ServerError of PouchDB.Core.Error
 
     and Value = 
       {
@@ -90,14 +91,6 @@ namespace ElPouch
     let getResponse handler (response:'a) =
       handler (Ok response)
 
-    let getError handler response  =
-      response
-        |> string
-        |> Decode.fromString ErrorDocument.Decoder
-        |> function
-            | Ok data -> handler (ServerError data) // server error
-            | Error msg -> handler (JsonError msg) // decoder error
-
     let decodeAllDocs<'T> (customDecoder:Decode.Decoder<'T>) stringToDecode : Result<InnerDocument<'T> list, HelperError> =
       Decode.fromString (AllDocsDocument.Decoder customDecoder) stringToDecode
       |> function
@@ -111,6 +104,7 @@ namespace ElPouch
         | Ok innerDocuments -> innerDocuments |> List.map( fun d -> d.Doc) |> Ok
         | Error s -> Error s
 
+    (*
     let checkError err =
         err
           |> string
@@ -118,6 +112,7 @@ namespace ElPouch
           |> function
               | Ok data -> Error (ServerError data) // server error
               | Error err -> Error (JsonError err) // decoder error
+    *)
 
   module Selectors =
 
@@ -130,6 +125,7 @@ namespace ElPouch
   module Standard =
 
     open PouchDB.Core
+    open Types
     
     let allDocs options (handler:'Msg) documentDecoder (store:PouchDB.Database) =
       Elmish.Cmd.ofPromise
@@ -144,4 +140,6 @@ namespace ElPouch
               | Error s -> Error s
           handler results
         )
-        (fun err -> handler (Helpers.checkError err) )
+        (fun err -> 
+          let ex: PouchDB.Core.Error = !!err
+          handler (Error (ServerError ex)) )

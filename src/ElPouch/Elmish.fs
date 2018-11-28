@@ -8,5 +8,5 @@ module Elmish =
 
   module Relax =
 
-    let allDocs (handler:'Msg) (documentDecoder:Decode.Decoder<'Doc>) (store:PouchDB.Database) =
+    let allDocs (handler: 'Msg) (documentDecoder: Decode.Decoder<'Doc>) (store: PouchDB.Database) =
       Standard.allDocs Selectors.retrieveDocs handler documentDecoder store

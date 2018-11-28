@@ -1,3 +1,13 @@
+### 0.2.0
+
+* Breaking change: Get Helpers now return GetResult<'T>
+* Breaking changes: Relax.allDocs is now Relax.AllDocs.all 
+* great range of tests for allDocs 
+* Introducing Relax.bulkDocs
+* Introducing Relax.AllDocs.all
+* Introducing Relax.AllDocs.Range.between
+* Introducing Relax.AllDocs.Range.startingWith
+
 ### 0.1.1
 
 * get: proper error handling with PouchDB.Core.Error
