@@ -3,7 +3,7 @@
 
 # ElPouch
 
-Fable wrappers and helpers for [PouchDB](http://www.pouchdb.com)
+Fable wrappers and helpers for [PouchDB](http://pouchdb.com)
 
 Package | Stable | Prerelease
 --- | --- | ---
