@@ -1,3 +1,7 @@
+# Project needs to update to Fable.Core 3.x. It also relies on old version of other libraries. So for now, don't use. Thanks.
+
+
+
 # Disclaimer
 :warning: This is a highly experimental project. While many things work, it should be noted that the Api may change. So for now use at your own risks.  :warning:
 
