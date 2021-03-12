@@ -169,6 +169,52 @@ describe "Core tests" <| fun _ ->
       |> Promise.map(fun actual -> equal true actual)
       |> Promise.catch(fun e -> printfn "%s" e.Message; equal "expected" "wrong")
 
+  it "Bulk check error" <| fun () ->
+    promise {
+
+      let data =
+        [0..10]
+          |> List.map( fun i -> 
+            let test = Test.Dummy i
+            { test with Id="same Id" } |> Test.Encode)
+          |> List.toArray
+
+      let options: PouchDB.Core.BulkDocsOptions = jsOptions(fun opt ->
+        opt.docs <- !!data
+      )
+      let! results = db.bulkDocs options
+      printfn "%s" (JS.JSON.stringify results)
+      return results.Count = data.Length
+    }
+      |> Promise.map(fun actual -> equal true actual)
+      |> Promise.catch(fun e -> printfn "%s" e.Message; equal "expected" "wrong")
+
+  it "Bulk check output" <| fun () ->
+    promise {
+
+      let data =
+        [0..10]
+          |> List.map(Test.Dummy >> Test.Encode)
+          |> List.toArray
+
+      let options: PouchDB.Core.BulkDocsOptions = jsOptions(fun opt ->
+        opt.docs <- !!data
+      )
+      let! results = db.bulkDocs options
+      results 
+        |> Seq.iter( fun result -> 
+          if isNull result?reason then // it's not an error
+            let response : PouchDB.Core.Response = unbox result
+            printfn "Response: %A" response.id
+          else
+            let error : PouchDB.Core.Error = unbox result
+            printfn "Error: %A" error.reason
+        )
+      return results.Count = data.Length
+    }
+      |> Promise.map(fun actual -> equal true actual)
+      |> Promise.catch(fun e -> printfn "%s" e.Message; equal "expected" "wrong")
+
 describe "All docs" <| fun _ ->
 
     it "simple test " <| fun () ->
